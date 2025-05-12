@@ -1,6 +1,7 @@
 import os
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
+import datetime
 import google.generativeai as genai
 
 
@@ -20,9 +21,41 @@ intents.message_content = True
 bot = commands.Bot(command_prefix="/", intents=intents)
 
 channel_histories = {}
+
+
 @bot.event
 async def on_ready():
     print(f"{bot.user} su online dan su siap menjawab!")
+    renungan.start()
+
+
+# renungan
+@tasks.loop(seconds=60)
+async def renungan():
+    now = datetime.datetime.now()
+    current_time = now.strftime("%H:%M")
+
+    if current_time in ["06:00", "21:00"]:
+        print("Waktunya renungan!")
+        channel = bot.get_channel(1371476522036105387)
+
+        if channel:
+            waktu = ""
+            if current_time == "06:00":
+                waktu = "pagi"
+            elif current_time == "21:00":
+                waktu = "malam"
+            prompt = f"Buatkan renungan {waktu} ini untuk tanggal {now.day} {now.month} {now.year} dari Alkitab. Pastikan response tidak lebih dari 2000 karakter. Jangan berikan response seperti 'Tentu, ini renungan malam untuk tanggal ..., berdasarkan Alkitab:', tetapi langsung saja kasih tanpa memberikan response seolaholah response dari AI. Struktur dari renungan harus terdapat judul, ayat, isi renungan, dan apa yang harus didoakan hari ini."
+
+            try:
+                response = model.generate_content(prompt)
+                await channel.send(
+                    f"We kam pace <@{591159912881586183}> <@{533104933168480286}> <@{450509161210314752}> <@{460678478988312606}>, baca tong pu renungan {waktu} dulu ini."
+                )
+                await channel.send(response.text.strip())
+            except Exception as e:
+                print("Error:", e)
+                await channel.send("❌ Gagal kirim pesan otomatis.")
 
 
 @bot.command()
@@ -66,6 +99,7 @@ async def pace(ctx, *, pertanyaan):
         else:
             await ctx.send("❌ Terjadi kesalahan saat menjawab.")
 
+
 @bot.command()
 async def reset(ctx):
     channel_id = ctx.channel.id
@@ -76,5 +110,6 @@ async def reset(ctx):
         await ctx.send(
             "⚠️ Belum ada konteks di channel ini. Pace belum ada bicara apa-apa."
         )
+
 
 bot.run(DISCORD_TOKEN)
