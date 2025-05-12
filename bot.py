@@ -95,7 +95,7 @@ async def pace(ctx, *, pertanyaan):
             ] + channel_histories[channel_id][-20:]
 
     except Exception as e:
-        await ctx.send("❌ Terjadi kesalahan saat menjawab.")
+        await ctx.send(f"❌ Terjadi kesalahan saat menjawab. {e}")
         print("Error:", e)
 
         # Tangani error karena limit API
@@ -105,7 +105,7 @@ async def pace(ctx, *, pertanyaan):
                 f"❌ Pace su capek, sa pu kuota API su habis ni😔\n<@{admin_id}>, bantu cek dulu!"
             )
         else:
-            await ctx.send("❌ Terjadi kesalahan saat menjawab.")
+            await ctx.send(f"❌ Terjadi kesalahan saat menjawab. {e}")
 
 
 @bot.command()
