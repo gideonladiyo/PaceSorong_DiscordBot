@@ -29,10 +29,12 @@ jobs:
             cd /home/PaceSorong_DiscordBot
 
             echo "📥 Menandai folder git sebagai aman"
-            git config --global --add safe.directory /home/PaceSorong_DiscordBot
+            sudo git config --global --add safe.directory /home/PaceSorong_DiscordBot
 
             echo "📥 Menarik perubahan terbaru"
-            git pull origin main
+            sudo git pull origin main
+
+            ls
 
             echo "🐳 Membuild dan menjalankan kontainer Docker"
             sudo docker stop pace-discord-bot || true
