@@ -1,14 +1,15 @@
+# Gunakan image Python minimal
 FROM python:3.11-slim
+
+# Set working directory di dalam container
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    python3-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt .
+# Salin requirements dan install dependencies
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . . 
+# Salin seluruh isi project ke dalam container
+COPY . /app/
 
+# Jalankan aplikasi
 CMD ["python", "bot.py"]
