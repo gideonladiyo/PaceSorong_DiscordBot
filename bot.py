@@ -100,10 +100,10 @@ async def pace(ctx, *, pertanyaan):
             await ctx.send(next_response)
 
         # Kalau konteks > 20
-        if len(channel_histories[channel_id]) > 22:
+        if len(channel_histories[channel_id]) > 8:
             channel_histories[channel_id] = [
                 channel_histories[channel_id][0]
-            ] + channel_histories[channel_id][-20:]
+            ] + channel_histories[channel_id][-6:]
 
     except Exception as e:
         await ctx.send(f"❌ Terjadi kesalahan saat menjawab. {e}")
