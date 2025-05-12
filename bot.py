@@ -62,7 +62,7 @@ async def renungan():
                 await channel.send("❌ Gagal kirim pesan otomatis.")
 
 
-MAX_LENGTH = 1700
+MAX_LENGTH = 2000
 @bot.command()
 async def pace(ctx, *, pertanyaan):
     try:
@@ -87,12 +87,15 @@ async def pace(ctx, *, pertanyaan):
         # Membatasi panjang teks agar tidak lebih dari 1700 karakter
         response_text = response.text.strip()
         if len(response_text) > MAX_LENGTH:
-            response_text = response_text[:MAX_LENGTH]  # Potong jika lebih panjang
+            response_text = response_text[:MAX_LENGTH]
+            next_response = response_text[MAX_LENGTH:]
 
         # Masukkan response ke riwayat
         channel_histories[channel_id].append(f"Pace: {response_text}")
 
         await ctx.send(response_text)
+        if len(response_text) > MAX_LENGTH:
+            await ctx.send(next_response)
 
         # Kalau konteks > 20
         if len(channel_histories[channel_id]) > 22:
