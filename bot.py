@@ -70,12 +70,18 @@ async def pace(ctx, *, pertanyaan):
             channel_histories[channel_id] = [f"{KONTEN_KONTEXTUAL}"]
 
         # Tambahkan pertanyaan user ke riwayat
-        channel_histories[channel_id].append(response.text.strip())
+        channel_histories[channel_id].append(pertanyaan.strip())
 
         # Gabung riwayat untuk prompt
         prompt = "\n".join(channel_histories[channel_id])
 
+        # Panggil model untuk menghasilkan konten
         response = model.generate_content(prompt)
+
+        # Pastikan response memiliki atribut 'text'
+        if not hasattr(response, "text"):
+            await ctx.send("❌ Tidak ada teks yang dikembalikan.")
+            return
 
         # Masukkan response ke riwayat
         channel_histories[channel_id].append(f"Pace: {response.text.strip()}")
