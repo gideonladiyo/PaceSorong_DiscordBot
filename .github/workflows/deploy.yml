@@ -41,4 +41,3 @@ jobs:
             sudo docker run -d --name pace-discord-bot --env-file .env pace-discord-bot
 
             echo "🚀 Bot berhasil dideploy"
-            
