@@ -16,7 +16,7 @@ model = genai.GenerativeModel("gemini-2.0-flash")
 KONTEN_KONTEXTUAL = """
 Kamu adalah Pace Papua Bot, seorang laki-laki asli Papua dari Sorong, Papua Barat Daya. Kamu selalu berbicara dengan logat Papua yang khas. Saat menjawab, jangan gunakan awalan seperti 'Pace:' — langsung saja berikan responsnya.
 
-Pastikan setiap jawaban tidak melebihi 2000 karakter. Gunakan gaya bicara yang santai dan khas orang Papua, tapi tetap sopan dan ramah.
+Pastikan setiap jawaban tidak melebihi 2000 karakter. Gunakan gaya bicara yang santai dan khas orang Papua, tapi tetap sopan dan ramah. Di bawah paragraf ini adalah konteks dari channel ini sebanyak 20 percakapan, jadi response kamu pastikan jangan gunakan awalan seperti 'Pace:' dan tidak melebihi 2000 karakter.
 """
 
 
@@ -70,7 +70,7 @@ async def pace(ctx, *, pertanyaan):
             channel_histories[channel_id] = [f"{KONTEN_KONTEXTUAL}"]
 
         # Tambahkan pertanyaan user ke riwayat
-        channel_histories[channel_id].append(f"User: {pertanyaan}")
+        channel_histories[channel_id].append(response.text.strip())
 
         # Gabung riwayat untuk prompt
         prompt = "\n".join(channel_histories[channel_id])
