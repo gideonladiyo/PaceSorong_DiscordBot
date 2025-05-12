@@ -85,8 +85,6 @@ async def pace(ctx, *, pertanyaan):
                 channel_histories[channel_id][0]
             ] + channel_histories[channel_id][-20:]
 
-        print(channel_histories)
-
     except Exception as e:
         await ctx.send("❌ Terjadi kesalahan saat menjawab.")
         print("Error:", e)
