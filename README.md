@@ -1,4 +1,4 @@
-# Bot Pace Sorong 1.1.1
+# Bot Pace Sorong 1.1.2
 
 ## Daftar Isi/Table of Contents
 
