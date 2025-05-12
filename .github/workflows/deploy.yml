@@ -28,13 +28,16 @@ jobs:
             echo "✅ Terhubung ke server"
             cd /home/PaceSorong_DiscordBot
 
+            echo "📥 Menandai folder git sebagai aman"
+            git config --global --add safe.directory /home/PaceSorong_DiscordBot
+
             echo "📥 Menarik perubahan terbaru"
             git pull origin main
 
             echo "🐳 Membuild dan menjalankan kontainer Docker"
-            docker stop pace-discord-bot || true
-            docker rm pace-discord-bot || true
-            docker build -t pace-discord-bot .
-            docker run -d --name pace-discord-bot --env-file .env pace-discord-bot
+            sudo docker stop pace-discord-bot || true
+            sudo docker rm pace-discord-bot || true
+            sudo docker build -t pace-discord-bot .
+            sudo docker run -d --name pace-discord-bot --env-file .env pace-discord-bot
 
             echo "🚀 Bot berhasil dideploy"
