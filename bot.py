@@ -3,8 +3,9 @@ import discord
 from discord.ext import commands, tasks
 import datetime
 import google.generativeai as genai
+from dotenv import load_dotenv
 
-
+load_dotenv()
 # Load API Keys dari environment variables
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
