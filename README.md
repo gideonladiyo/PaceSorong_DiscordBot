@@ -1,4 +1,4 @@
-# Bot Pace Sorong 1.0.0
+# Bot Pace Sorong 1.1.0
 
 ## Daftar Isi/Table of Contents
 
@@ -71,3 +71,7 @@ Copy Link yang dihasilkan lalu buka di browser dan pilih lokasi server bot akan 
 ```bash
 /pace halo pace
 ```
+
+Command `/reset` untuk mereset konteks dari channel jika response bot mulai tidak sesuai atau nguawuor.
+
+Terdapat fitur renungan harian setiap jam 6 pagi dan jam 9 malam yang otomatis dikirimkan ketika bot sedang dijalankan
