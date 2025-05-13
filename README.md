@@ -1,10 +1,11 @@
-# Bot Pace Sorong 1.1.2
+# Bot Pace Sorong 1.2.0
 
 ## Daftar Isi/Table of Contents
 
 - [Pendahuluan](#pendahuluan)
 - [Cara Membuat Bot](#cara-membuat-bot)
 - [Cara Menggunakan Bot](#cara-menggunakan-bot)
+- [Fitur Pace Sorong Bot](#fitur-pace-sorong-bot)
 
 ## Pendahuluan
 
@@ -19,18 +20,14 @@ Untuk membuat bot ini, cukup clone repository ini, kemudian buat file `.env` yan
 Jalankan perintah berikut di terminal:
 
 ```bash
-
 git clone https://github.com/gideonladiyo/PaceSorong_DiscordBot.git
-
 ```
 
 lalu:
 
 ```bash
-
 cd PaceSorong_DiscordBot
 code .
-
 ```
 
 - Install library/depedencies dengan memasukkan command berikut di terminal:
@@ -66,12 +63,20 @@ Untuk `Bot Permission` pilih:
 - ✅View Channels
 - ✅Read Messages History
 
-Copy Link yang dihasilkan lalu buka di browser dan pilih lokasi server bot akan ditambahkan. Untuk memanggil bot di chat, cukup awali dengan command `/pace` pada chat. Contoh:
+Copy Link yang dihasilkan lalu buka di browser dan pilih lokasi server bot akan ditambahkan.
 
-```bash
-/pace halo pace
-```
+## Fitur Pace Sorong Bot
 
-Command `/reset` untuk mereset konteks dari channel jika response bot mulai tidak sesuai atau nguawuor.
+- **Chatbot**: Pengguna dapat melakukan percakapan dengan bot ini di channel apa saja dengan memanggil command `/pace`. Bot ini dapat menjawab pertanyaan, memberikan informasi, dan melakukan tugas lainnya dengan menggunakan dialeg yang berasal dari Papua. Bot ini masih kurang dalam pemahaman konteks pada percakapan yang dilakukan dengan bot. Contoh penggunaan command:
 
-Terdapat fitur renungan harian setiap jam 6 pagi dan jam 9 malam yang otomatis dikirimkan ketika bot sedang dijalankan
+    ```bash
+    /pace halo pace!
+    ```
+
+- **Renungan pagi dan malam**: Pengguna dapat menyetel server di mana bot akan mengirim renungan pagi dan malam setiap jam 6 pagi dan 9 malam. Pengguna dapat memanggil command `/setrenunganchannel` pada channel tertentu agar bot dapat mengetahui channel mana saja yang akan dikirim renungan harian. Untuk membatalkan channel yang dipilih, pengguna bisa menggunakan command `/cancelrenunganchannel`. Jika pengguna ingin bot mengirim renungan secara manual, cukup panggil bot dengan command `/renunganmanual` diikuti dengan teks `pagi` atau `malam` setelah command agar bot mengetahui jenis renungan yang akan dikirim. Contoh penggunaan command:
+
+    ```bash
+    /setrenunganchannel
+    /cancelrenunganchannel
+    /renunganmanual pagi
+    ```
