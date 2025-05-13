@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 import datetime
 import google.generativeai as genai
 from dotenv import load_dotenv
+from zoneinfo import ZoneInfo
 
 load_dotenv()
 # Load API Keys dari environment variables
@@ -36,7 +37,7 @@ async def on_ready():
 # renungan
 @tasks.loop(seconds=60)
 async def renungan():
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(ZoneInfo("Asia/Jakarta"))
     current_time = now.strftime("%H:%M")
 
     if current_time in ["06:00", "21:00"]:
