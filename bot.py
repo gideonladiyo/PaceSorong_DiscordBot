@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from zoneinfo import ZoneInfo
 from utils.read_save_data import *
 from utils.filepath import file_path
+from utils.generate_prompt import generate_prompt
 
 load_dotenv()
 
@@ -50,7 +51,7 @@ async def renungan():
                 elif current_time == "21:00":
                     waktu = "malam"
 
-                prompt = f"Buatkan renungan {waktu} ini untuk tanggal {now.day} {now.month} {now.year} dari Alkitab. Pastikan response tidak lebih dari 2000 karakter. Jangan berikan response seperti 'Tentu, ini renungan malam untuk tanggal ..., berdasarkan Alkitab:', tetapi langsung saja kasih tanpa memberikan response seolaholah response dari AI. Struktur dari renungan harus terdapat judul, ayat, isi renungan, dan apa yang harus didoakan hari ini. Responsnya jangan ada 'Pace:', langsung responsenya"
+                prompt = generate_prompt(type="renungan", time=now, waktu=waktu)
 
                 try:
                     response = model.generate_content(prompt)
@@ -98,7 +99,7 @@ async def renunganmanual(ctx, waktu: str):
         return
 
     now = datetime.datetime.now(ZoneInfo("Asia/Jakarta"))
-    prompt = f"Buatkan renungan {waktu} ini untuk tanggal {now.day} {now.month} {now.year} dari Alkitab. Pastikan response tidak lebih dari 2000 karakter. Jangan berikan response seperti 'Tentu, ini renungan malam untuk tanggal ..., berdasarkan Alkitab:', tetapi langsung saja kasih tanpa memberikan response seolaholah response dari AI. Struktur dari renungan harus terdapat judul, ayat, isi renungan, dan apa yang harus didoakan hari ini. Responsnya jangan ada 'Pace:', langsung responsenya"
+    prompt = generate_prompt(type="renungan", time=now, waktu=waktu)
 
     response = model.generate_content(prompt)
     await ctx.send(f"We kam pace @everyone, baca tong pu renungan {waktu} dulu ini.")
