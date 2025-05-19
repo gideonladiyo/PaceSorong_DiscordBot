@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from zoneinfo import ZoneInfo
 from utils.read_save_data import *
 from utils.filepath import file_path
+from utils.generate_prompt import generate_prompt
 
 load_dotenv()
 
@@ -26,10 +27,12 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="/", intents=intents)
 
+
 @bot.event
 async def on_ready():
     print(f"{bot.user} su online dan su siap menjawab!")
     renungan.start()
+
 
 # renungan
 @tasks.loop(seconds=60)
@@ -48,8 +51,8 @@ async def renungan():
                 elif current_time == "21:00":
                     waktu = "malam"
 
-                prompt = f"Buatkan renungan {waktu} ini untuk tanggal {now.day} {now.month} {now.year} dari Alkitab. Pastikan response tidak lebih dari 2000 karakter. Jangan berikan response seperti 'Tentu, ini renungan malam untuk tanggal ..., berdasarkan Alkitab:', tetapi langsung saja kasih tanpa memberikan response seolaholah response dari AI. Struktur dari renungan harus terdapat judul, ayat, isi renungan, dan apa yang harus didoakan hari ini. Responsnya jangan ada 'Pace:', langsung responsenya"
-                
+                prompt = generate_prompt(type="renungan", time=now, waktu=waktu)
+
                 try:
                     response = model.generate_content(prompt)
                     await channel.send(
@@ -60,6 +63,7 @@ async def renungan():
                     print("Error:", e)
                     await channel.send("❌ Gagal kirim pesan otomatis.")
 
+
 @bot.command()
 async def setrenunganchannel(ctx):
     new_renungan_channel = ctx.channel.id
@@ -67,11 +71,14 @@ async def setrenunganchannel(ctx):
     if new_renungan_channel not in renungan_ids:
         renungan_ids.append(new_renungan_channel)
         save_data(filepath=file_path.RENUNGAN_PATH, data=renungan_ids)
-        await ctx.send("✅ Channel ini su jadi tempat kirim renungan e! Kalo mau kasi batal tinggal pake command `/cancelrenunganchannel` saja.")
+        await ctx.send(
+            "✅ Channel ini su jadi tempat kirim renungan e! Kalo mau kasi batal tinggal pake command `/cancelrenunganchannel` saja."
+        )
     else:
         await ctx.send(
             "Aduh kaka channel ini su jadi tempat kirim renungan, jadi ko tinggal tunggu saja👌"
         )
+
 
 @bot.command()
 async def cancelrenunganchannel(ctx):
@@ -80,7 +87,9 @@ async def cancelrenunganchannel(ctx):
     if channel_id in renungan_ids:
         renungan_ids.remove(channel_id)
         save_data(filepath=file_path.RENUNGAN_PATH, data=renungan_ids)
-        await ctx.send("✅ Ko su batalkan channel ini jadi tempat kirim renungan, jadi sa tra kirim lagi. Tapi kalo ko mau kirim tinggal kasi command `/setrenunganchannel` di channel yang mau ko tempati e!")
+        await ctx.send(
+            "✅ Ko su batalkan channel ini jadi tempat kirim renungan, jadi sa tra kirim lagi. Tapi kalo ko mau kirim tinggal kasi command `/setrenunganchannel` di channel yang mau ko tempati e!"
+        )
 
 
 @bot.command()
@@ -90,7 +99,7 @@ async def renunganmanual(ctx, waktu: str):
         return
 
     now = datetime.datetime.now(ZoneInfo("Asia/Jakarta"))
-    prompt = f"Buatkan renungan {waktu} ini untuk tanggal {now.day} {now.month} {now.year} dari Alkitab. Pastikan response tidak lebih dari 2000 karakter. Jangan berikan response seperti 'Tentu, ini renungan malam untuk tanggal ..., berdasarkan Alkitab:', tetapi langsung saja kasih tanpa memberikan response seolaholah response dari AI. Struktur dari renungan harus terdapat judul, ayat, isi renungan, dan apa yang harus didoakan hari ini. Responsnya jangan ada 'Pace:', langsung responsenya"
+    prompt = generate_prompt(type="renungan", time=now, waktu=waktu)
 
     response = model.generate_content(prompt)
     await ctx.send(f"We kam pace @everyone, baca tong pu renungan {waktu} dulu ini.")
@@ -99,6 +108,8 @@ async def renunganmanual(ctx, waktu: str):
 
 # chatbot
 MAX_LENGTH = 1700
+
+
 @bot.command()
 async def pace(ctx, *, pertanyaan):
     try:
@@ -156,6 +167,7 @@ async def pace(ctx, *, pertanyaan):
         else:
             await ctx.send(f"❌ Terjadi kesalahan saat menjawab. {e}")
 
+
 # reset riwayat
 @bot.command()
 async def reset(ctx):
@@ -169,5 +181,6 @@ async def reset(ctx):
         await ctx.send(
             "⚠️ Belum ada konteks di channel ini. Pace belum ada bicara apa-apa."
         )
+
 
 bot.run(DISCORD_TOKEN)
