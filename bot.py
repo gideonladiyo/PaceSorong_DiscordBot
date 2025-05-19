@@ -66,7 +66,7 @@ async def renungan():
 
 @bot.command()
 async def setrenunganchannel(ctx):
-    new_renungan_channel = ctx.channel.id
+    new_renungan_channel = str(ctx.channel.id)
     renungan_ids = read_data(filepath=file_path.RENUNGAN_PATH)
     if new_renungan_channel not in renungan_ids:
         renungan_ids.append(new_renungan_channel)
@@ -82,7 +82,7 @@ async def setrenunganchannel(ctx):
 
 @bot.command()
 async def cancelrenunganchannel(ctx):
-    channel_id = ctx.channel.id
+    channel_id = str(ctx.channel.id)
     renungan_ids = read_data(filepath=file_path.RENUNGAN_PATH)
     if channel_id in renungan_ids:
         renungan_ids.remove(channel_id)
@@ -113,7 +113,7 @@ MAX_LENGTH = 1700
 @bot.command()
 async def pace(ctx, *, pertanyaan):
     try:
-        channel_id = ctx.channel.id
+        channel_id = str(ctx.channel.id)
         chat_histories = read_data(filepath=file_path.CHANNEL_HISTORIES_PATH)
         if channel_id not in chat_histories:
             chat_histories[channel_id] = [f"{KONTEN_KONTEXTUAL}"]
@@ -171,7 +171,7 @@ async def pace(ctx, *, pertanyaan):
 # reset riwayat
 @bot.command()
 async def reset(ctx):
-    channel_id = ctx.channel.id
+    channel_id = str(ctx.channel.id)
     chat_histories = read_data(filepath=file_path.CHANNEL_HISTORIES_PATH)
     if channel_id in chat_histories:
         del chat_histories[channel_id]
