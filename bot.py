@@ -26,8 +26,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="/", intents=intents)
 
-channel_histories = {}
-
 @bot.event
 async def on_ready():
     print(f"{bot.user} su online dan su siap menjawab!")
@@ -105,14 +103,15 @@ MAX_LENGTH = 1700
 async def pace(ctx, *, pertanyaan):
     try:
         channel_id = ctx.channel.id
-        if channel_id not in channel_histories:
-            channel_histories[channel_id] = [f"{KONTEN_KONTEXTUAL}"]
+        chat_histories = read_data(filepath=file_path.CHANNEL_HISTORIES_PATH)
+        if channel_id not in chat_histories:
+            chat_histories[channel_id] = [f"{KONTEN_KONTEXTUAL}"]
 
         # Tambahkan pertanyaan user ke riwayat
-        channel_histories[channel_id].append(f"User: {pertanyaan}")
+        chat_histories[channel_id].append(f"User: {pertanyaan}")
 
         # Gabung riwayat untuk prompt
-        prompt = "\n".join(channel_histories[channel_id])
+        prompt = "\n".join(chat_histories[channel_id])
 
         # Panggil model untuk menghasilkan konten
         response = model.generate_content(prompt)
@@ -131,17 +130,18 @@ async def pace(ctx, *, pertanyaan):
             next_response = response_text[MAX_LENGTH:]
 
         # Masukkan response ke riwayat
-        channel_histories[channel_id].append(f"Pace: {response_text}")
+        chat_histories[channel_id].append(f"Pace: {response_text}")
 
         await ctx.send(response_text)
         if len(response_text) > MAX_LENGTH:
             await ctx.send(next_response)
 
         # Kalau konteks > 6
-        if len(channel_histories[channel_id]) > 8:
-            channel_histories[channel_id] = [
-                channel_histories[channel_id][0]
-            ] + channel_histories[channel_id][-6:]
+        if len(chat_histories[channel_id]) > 8:
+            chat_histories[channel_id] = [
+                chat_histories[channel_id][0]
+            ] + chat_histories[channel_id][-6:]
+        save_data(filepath=file_path.CHANNEL_HISTORIES_PATH, data=chat_histories)
 
     except Exception as e:
         await ctx.send(f"❌ Terjadi kesalahan saat menjawab. {e}")
@@ -160,13 +160,14 @@ async def pace(ctx, *, pertanyaan):
 @bot.command()
 async def reset(ctx):
     channel_id = ctx.channel.id
-    if channel_id in channel_histories:
-        del channel_histories[channel_id]
+    chat_histories = read_data(filepath=file_path.CHANNEL_HISTORIES_PATH)
+    if channel_id in chat_histories:
+        del chat_histories[channel_id]
         await ctx.send("🔄 Konteks percakapan su direset. Pace mulai baru lagi e!")
+        save_data(filepath=file_path.CHANNEL_HISTORIES_PATH, data=chat_histories)
     else:
         await ctx.send(
             "⚠️ Belum ada konteks di channel ini. Pace belum ada bicara apa-apa."
         )
-
 
 bot.run(DISCORD_TOKEN)
