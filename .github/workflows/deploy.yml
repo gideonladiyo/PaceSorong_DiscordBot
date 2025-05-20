@@ -34,7 +34,7 @@ jobs:
             echo "🔄 Resetting local changes..."
             git reset --hard
             git clean -fd
-            
+
             echo "📥 Pulling latest changes..."
             git pull origin main
 
@@ -51,3 +51,4 @@ jobs:
             pace-discord-bot
 
             echo "🚀 Bot berhasil dideploy"
+            
