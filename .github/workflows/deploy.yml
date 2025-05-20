@@ -32,7 +32,7 @@ jobs:
             sudo git config --global --add safe.directory /home/PaceSorong_DiscordBot
 
             echo "📥 Pulling latest changes..."
-            git pull origin main
+            sudo git pull origin main
 
             ls
 
