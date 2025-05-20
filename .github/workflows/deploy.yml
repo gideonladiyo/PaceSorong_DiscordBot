@@ -31,8 +31,12 @@ jobs:
             echo "📥 Menandai folder git sebagai aman"
             sudo git config --global --add safe.directory /home/PaceSorong_DiscordBot
 
-            echo "📥 Menarik perubahan terbaru"
-            sudo git pull origin main
+            echo "🔄 Resetting local changes..."
+            git reset --hard
+            git clean -fd
+            
+            echo "📥 Pulling latest changes..."
+            git pull origin main
 
             ls
 
