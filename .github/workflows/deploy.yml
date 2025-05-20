@@ -31,10 +31,6 @@ jobs:
             echo "📥 Menandai folder git sebagai aman"
             sudo git config --global --add safe.directory /home/PaceSorong_DiscordBot
 
-            echo "🔄 Resetting local changes..."
-            git reset --hard
-            git clean -fd
-
             echo "📥 Pulling latest changes..."
             git pull origin main
 
@@ -51,3 +47,4 @@ jobs:
             pace-discord-bot
 
             echo "🚀 Bot berhasil dideploy"
+            
