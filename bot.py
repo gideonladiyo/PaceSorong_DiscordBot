@@ -42,6 +42,7 @@ async def renungan():
 
     if current_time in ["06:00", "21:00"]:
         renungan_ids = read_data(filepath=file_path.RENUNGAN_PATH) or []
+        renungan_ids = [int(ch_id) for ch_id in renungan_ids]
         for channel_id in renungan_ids:
             channel = bot.get_channel(channel_id)
             if channel:
