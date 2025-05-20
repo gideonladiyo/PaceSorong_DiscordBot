@@ -28,6 +28,12 @@ jobs:
             echo "✅ Terhubung ke server"
             cd /home/PaceSorong_DiscordBot
 
+            echo "debug"
+            whoami
+            ls -ld .
+            ls -ld .git
+            ls -l .git/FETCH_HEAD
+
             echo "📥 Menandai folder git sebagai aman"
             sudo git config --global --add safe.directory /home/PaceSorong_DiscordBot
 
@@ -47,4 +53,3 @@ jobs:
             pace-discord-bot
 
             echo "🚀 Bot berhasil dideploy"
-            
