@@ -10,6 +10,23 @@ on:
       - main
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Run Pytest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run tests
+        run: |
+          export PYTHONPATH=.
+          pytest
+
   deploy-bot:
     name: Deploy Discord Bot to Production
     runs-on: ubuntu-latest
