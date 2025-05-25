@@ -183,5 +183,8 @@ async def reset(ctx):
             "⚠️ Belum ada konteks di channel ini. Pace belum ada bicara apa-apa."
         )
 
-
-bot.run(DISCORD_TOKEN)
+if __name__ == "__main__":
+    DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+    if not DISCORD_TOKEN:
+        raise ValueError("DISCORD_TOKEN is not set.")
+    bot.run(DISCORD_TOKEN)
