@@ -9,6 +9,7 @@ on:
     branches:
       - main
 
+jobs:
   deploy-bot:
     name: Deploy Discord Bot to Production
     runs-on: ubuntu-latest
