@@ -34,8 +34,6 @@ jobs:
             echo "📥 Pulling latest changes..."
             sudo git pull origin main
 
-            ls
-
             echo "🐳 Membuild dan menjalankan kontainer Docker"
             sudo docker stop pace-discord-bot || true
             sudo docker rm pace-discord-bot || true
