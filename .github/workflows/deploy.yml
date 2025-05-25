@@ -26,6 +26,7 @@ jobs:
         run: |
           export PYTHONPATH=.
           pytest
+          
 
   deploy-bot:
     name: Deploy Discord Bot to Production
