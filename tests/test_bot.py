@@ -20,7 +20,7 @@ async def test_setrenunganchannel(mock_save_data, mock_read_data, test_bot):
     ctx.channel.id = 1371476522036105387
     ctx.send = AsyncMock()
 
-    await test_bot.get_command("setrenunganchannel").callback(test_bot, ctx)
+    await test_bot.get_command("setrenunganchannel").callback(ctx)
 
     mock_save_data.assert_called_once()
     ctx.send.assert_called_once()
@@ -33,7 +33,7 @@ async def test_cancelrenunganchannel(mock_save_data, mock_read_data, test_bot):
     ctx.channel.id = 1371476522036105387
     ctx.send = AsyncMock()
 
-    await test_bot.get_command("cancelrenunganchannel").callback(test_bot, ctx)
+    await test_bot.get_command("cancelrenunganchannel").callback(ctx)
 
     mock_save_data.assert_called_once()
     ctx.send.assert_called_once()
@@ -50,7 +50,7 @@ async def test_renunganmanual_pagi(
     mock_response.text = "Ini renungan pagi"
     mock_generate_content.return_value = mock_response
 
-    await test_bot.get_command("renunganmanual").callback(test_bot, ctx, waktu="pagi")
+    await test_bot.get_command("renunganmanual").callback(ctx, waktu="pagi")
 
     ctx.send.assert_any_call(
         "We kam pace @everyone, baca tong pu renungan pagi dulu ini."
@@ -62,7 +62,7 @@ async def test_renunganmanual_invalid_time(test_bot):
     ctx = MagicMock()
     ctx.send = AsyncMock()
 
-    await test_bot.get_command("renunganmanual").callback(test_bot, ctx, waktu="siang")
+    await test_bot.get_command("renunganmanual").callback(ctx, waktu="siang")
 
     ctx.send.assert_called_once_with("⚠️ Waktu harus 'pagi' atau 'malam'.")
 
@@ -87,7 +87,7 @@ async def test_pace_command(
     mock_response.text = "Pace: Oke kaka, ini jawaban dari sa"
     mock_generate_content.return_value = mock_response
 
-    await test_bot.get_command("pace").callback(test_bot, ctx, pertanyaan="Apa kabar?")
+    await test_bot.get_command("pace").callback(ctx, pertanyaan="Apa kabar?")
 
     ctx.send.assert_any_call(" Oke kaka, ini jawaban dari sa")
 
@@ -101,7 +101,7 @@ async def test_reset_command(mock_save_data, mock_read_data, test_bot):
     ctx.channel.id = 1371413629567762525
     ctx.send = AsyncMock()
 
-    await test_bot.get_command("reset").callback(test_bot, ctx)
+    await test_bot.get_command("reset").callback(ctx)
 
     ctx.send.assert_called_once_with(
         "🔄 Konteks percakapan su direset. Pace mulai baru lagi e!"
