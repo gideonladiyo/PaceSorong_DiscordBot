@@ -39,7 +39,6 @@ jobs:
 
             if [ ! -d ".git" ]; then
                 echo "🔄 Folder belum berisi repo Git, melakukan clone..."
-                rm -rf "$APP_DIR"/*
                 git clone "$REPO_URL" "$APP_DIR"
             fi
 
