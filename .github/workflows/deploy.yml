@@ -44,21 +44,21 @@ jobs:
             fi
 
             echo "📥 Menandai folder git sebagai aman"
-            sudo git config --global --add safe.directory "$APP_DIR"
+            git config --global --add safe.directory "$APP_DIR"
 
             echo "📥 Pulling latest changes..."
-            sudo git pull origin main
+            git pull origin main
 
             echo "🐳 Mengecek apakah container $CONTAINER_NAME sedang berjalan"
             if [ "$(sudo docker ps -aq -f name=$CONTAINER_NAME)" ]; then
                 echo "🛑 Menghentikan dan menghapus container lama..."
-                sudo docker stop $CONTAINER_NAME
-                sudo docker rm $CONTAINER_NAME
+                docker stop $CONTAINER_NAME
+                docker rm $CONTAINER_NAME
             fi
 
             echo "🐳 Membuild dan menjalankan kontainer Docker"
-            sudo docker build -t $CONTAINER_NAME .
-            sudo docker run -d \
+            docker build -t $CONTAINER_NAME .
+            docker run -d \
               --name $CONTAINER_NAME \
               --env-file .env \
               -v "$APP_DIR/data:/app/data" \
