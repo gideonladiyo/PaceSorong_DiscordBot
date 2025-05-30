@@ -25,23 +25,43 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            echo "✅ Terhubung ke server"
-            cd /home/PaceSorong_DiscordBot
+            REPO_URL="https://github.com/gideonladiyo/PaceSorong_DiscordBot.git"
+            APP_DIR="/home/gideonladiyo/PaceSorong_DiscordBot"
+            CONTAINER_NAME="pace-discord-bot"
+
+            echo "✅ Memastikan direktori proyek tersedia"
+            if [ ! -d "$APP_DIR" ]; then
+                echo "📁 Direktori belum ada, membuat direktori..."
+                mkdir -p "$APP_DIR"
+            fi
+
+            cd "$APP_DIR"
+
+            if [ ! -d ".git" ]; then
+                echo "🔄 Folder belum berisi repo Git, melakukan clone..."
+                rm -rf "$APP_DIR"/*
+                git clone "$REPO_URL" "$APP_DIR"
+            fi
 
             echo "📥 Menandai folder git sebagai aman"
-            sudo git config --global --add safe.directory /home/PaceSorong_DiscordBot
+            sudo git config --global --add safe.directory "$APP_DIR"
 
             echo "📥 Pulling latest changes..."
             sudo git pull origin main
 
-            echo "🐳 Membuild dan menjalankan kontainer Docker"
-            sudo docker stop pace-discord-bot || true
-            sudo docker rm pace-discord-bot || true
-            sudo docker build -t pace-discord-bot .
-            sudo docker run -d \
-            --name pace-discord-bot \
-            --env-file .env \
-            -v /home/PaceSorong_DiscordBot/data:/app/data \
-            pace-discord-bot
+            echo "🐳 Mengecek apakah container $CONTAINER_NAME sedang berjalan"
+            if [ "$(sudo docker ps -aq -f name=$CONTAINER_NAME)" ]; then
+                echo "🛑 Menghentikan dan menghapus container lama..."
+                sudo docker stop $CONTAINER_NAME
+                sudo docker rm $CONTAINER_NAME
+            fi
 
-            echo "🚀 Bot berhasil dideploy"
+            echo "🐳 Membuild dan menjalankan kontainer Docker"
+            sudo docker build -t $CONTAINER_NAME .
+            sudo docker run -d \
+              --name $CONTAINER_NAME \
+              --env-file .env \
+              -v "$APP_DIR/data:/app/data" \
+              $CONTAINER_NAME
+
+            echo "🚀 Bot berhasil dideploy
