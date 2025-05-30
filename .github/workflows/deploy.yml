@@ -25,21 +25,17 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            REPO_URL="https://github.com/gideonladiyo/PaceSorong_DiscordBot.git"
-            APP_DIR="/home/gideonladiyo/PaceSorong_DiscordBot"
-            CONTAINER_NAME="pace-discord-bot"
-
             echo "✅ Memastikan direktori proyek tersedia"
-            if [ ! -d "$APP_DIR" ]; then
+            if [ ! -d "/home/gideonladiyo/PaceSorong_DiscordBot" ]; then
                 echo "📁 Direktori belum ada, membuat direktori..."
-                mkdir -p "$APP_DIR"
+                mkdir -p "/home/gideonladiyo/PaceSorong_DiscordBot"
             fi
 
             cd "$APP_DIR"
 
             if [ ! -d ".git" ]; then
                 echo "🔄 Folder belum berisi repo Git, melakukan clone..."
-                git clone "$REPO_URL" "$APP_DIR"
+                git clone https://github.com/gideonladiyo/PaceSorong_DiscordBot.git
             fi
 
             echo "📥 Menandai folder git sebagai aman"
@@ -48,19 +44,19 @@ jobs:
             echo "📥 Pulling latest changes..."
             git pull origin main
 
-            echo "🐳 Mengecek apakah container $CONTAINER_NAME sedang berjalan"
-            if [ "$(sudo docker ps -aq -f name=$CONTAINER_NAME)" ]; then
+            echo "🐳 Mengecek apakah container pace-discord-bot sedang berjalan"
+            if [ "$(sudo docker ps -aq -f name=pace-discord-bot)" ]; then
                 echo "🛑 Menghentikan dan menghapus container lama..."
-                docker stop $CONTAINER_NAME
-                docker rm $CONTAINER_NAME
+                docker stop pace-discord-bot
+                docker rm pace-discord-bot
             fi
 
             echo "🐳 Membuild dan menjalankan kontainer Docker"
-            docker build -t $CONTAINER_NAME .
+            docker build -t pace-discord-bot .
             docker run -d \
-              --name $CONTAINER_NAME \
+              --name pace-discord-bot \
               --env-file .env \
               -v "$APP_DIR/data:/app/data" \
-              $CONTAINER_NAME
+              pace-discord-bot
 
             echo "🚀 Bot berhasil dideploy
